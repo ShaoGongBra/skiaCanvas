@@ -1,0 +1,46 @@
+
+.Divider-Horizontal {
+  flex-shrink: 0;
+  border-color: $duxappLineColor;
+  border-top-width: 1Px;
+}
+
+.Divider-Vertical {
+  flex-shrink: 0;
+  border-left-width: 1Px;
+  border-color: $duxappLineColor;
+}
+
+.Divider {
+  &--primary {
+    border-color: $duxappPrimaryColor;
+  }
+
+  &--secondary {
+    border-color: $duxappSecondaryColor;
+  }
+
+  &--success {
+    border-color: $duxappSuccessColor;
+  }
+
+  &--danger {
+    border-color: $duxappDangerColor;
+  }
+
+  &--warning {
+    border-color: $duxappWarningColor;
+  }
+
+  &--custom1 {
+    border-color: $duxappCustomColor1;
+  }
+
+  &--custom2 {
+    border-color: $duxappCustomColor2;
+  }
+
+  &--custom3 {
+    border-color: $duxappCustomColor3;
+  }
+}

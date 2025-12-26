@@ -1,0 +1,65 @@
+.list-filter-pop {
+  height: 1000px;
+  background-color: $duxappWhiteColor;
+  border-radius: 24px 24px 0 0;
+  &__box {
+    // border: 0 solid #b3b3b3;
+    // border-top-width: 1px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  &__title {
+    justify-content: center;
+    height: 95px;
+    &__titleText {
+      color: $duxappTextColor1;
+      font-size: 28px;
+      font-weight: bold;
+    }
+  }
+  &__content {
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    &__enter {
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: row;
+      width: 100%;
+      margin-bottom: 30px;
+      text-align: center;
+      &__inputBox {
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+        flex-direction: row;
+      }
+      &__input {
+        width: 316px;
+        height: 57px;
+        text-align: center;
+        background-color: $duxappPageColor;
+        border-radius: 57px;
+        font-size: 28px;
+        padding: 0 10px;
+      }
+    }
+    &__item {
+      width: 163px;
+      height: 57px;
+      margin-bottom: 30px;
+      text-align: center;
+      line-height: 57px;
+      background-color: $duxappPageColor;
+      border-radius: 30px;
+      color: $duxappTextColor2;
+      font-size: 28px;
+      &--hover {
+        // background-color: $duxappWhiteColor;
+        border-width: 2px;
+        border-color: $duxappPrimaryColor;
+        color: $duxappPrimaryColor;
+      }
+    }
+  }
+}

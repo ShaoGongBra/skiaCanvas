@@ -1,0 +1,16 @@
+.TopView {
+  height: 100%;
+  background-color: $duxappPageColor;
+  display: flex;
+  flex-direction: column;
+
+  /*  #ifndef rn harmony  */
+  .position {
+    position: initial;
+  }
+
+  /*  #endif  */
+  &--safe {
+    padding-bottom: 68px;
+  }
+}

@@ -1,0 +1,79 @@
+diff --git a/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/boxShadow.js b/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/boxShadow.js
+index 73bc622..8e3fc4d 100644
+--- a/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/boxShadow.js
++++ b/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/boxShadow.js
+@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
+ exports["default"] = void 0;
+ var _util = require("./util");
+ var _default = exports["default"] = function _default(tokenStream) {
++  return tokenStream.nodes.map(node => node.value).join('')
+   var _parseShadow = (0, _util.parseShadow)(tokenStream),
+     offset = _parseShadow.offset,
+     radius = _parseShadow.radius,
+diff --git a/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/flex.js b/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/flex.js
+index 95f99f7..9b275bc 100644
+--- a/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/flex.js
++++ b/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/flex.js
+@@ -14,6 +14,16 @@ var defaultFlexGrow = 1;
+ var defaultFlexShrink = 1;
+ var defaultFlexBasis = 0;
+ var _default = exports["default"] = function _default(tokenStream) {
++  /**
++   * fix: 将flex: 1;原样输出
++   */
++  if (tokenStream.nodes.length === 1 && tokenStream.nodes[0].value === '1') {
++    return {
++      $merge: {
++        flex: 1
++      }
++    };
++  }
+   var flexGrow;
+   var flexShrink;
+   var flexBasis;
+diff --git a/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/util.js b/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/util.js
+index 1ef8f3d..b9dc726 100644
+--- a/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/util.js
++++ b/node_modules/taro-css-to-react-native/dist/css-to-react-native/transforms/util.js
+@@ -31,6 +31,14 @@ var directionFactory = exports.directionFactory = function directionFactory(_ref
+     _ref$suffix = _ref.suffix,
+     suffix = _ref$suffix === void 0 ? '' : _ref$suffix;
+   return function (tokenStream) {
++    if (tokenStream.nodes.length === 1 && tokenStream.nodes[0].value.endsWith('px')) {
++      const val = tokenStream.nodes[0].value.replace('px', '');
++      return {
++        $merge: {
++          [`${_ref$prefix}${_ref$suffix || ''}`]: `scalePx2dp(${val})`
++        }
++      };
++    }
+     var values = [];
+
+     // borderWidth doesn't currently allow a percent value, but may do in the future
+diff --git a/node_modules/taro-css-to-react-native/dist/index.js b/node_modules/taro-css-to-react-native/dist/index.js
+index 56a63b4..9d9fc91 100644
+--- a/node_modules/taro-css-to-react-native/dist/index.js
++++ b/node_modules/taro-css-to-react-native/dist/index.js
+@@ -26,6 +26,9 @@ var viewportUnitRe = /^([+-]?[0-9.]+)(vh|vw|vmin|vmax)$/;
+ var percentRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?%)$/;
+ var unsupportedUnitRe = /^([+-]?(?:\d*\.)?\d+(?:[Ee][+-]?\d+)?(ch|em|ex|cm|mm|in|pc|pt))$/;
+ var shorthandBorderProps = ['border-radius', 'border-width', 'border-color', 'border-style'];
++function kebabToCamel(str) {
++  return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
++}
+ var transformDecls = function transformDecls(styles, declarations, result) {
+   var options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+   for (var d in declarations) {
+@@ -49,6 +52,12 @@ var transformDecls = function transformDecls(styles, declarations, result) {
+     if (typeof options.scalable === 'boolean' && !options.scalable && /(?<!\d)(\d+)px/.test(value)) {
+       value = value.replace(/(?<!\d)(\d+)px/g, '$1PX');
+     }
++    if (typeof options.variables === 'function' && /^var\(--[a-zA-Z0-9-]+\)$/.test(value)) {
++      Object.assign(styles, {
++        [kebabToCamel(property)]: options.variables(value, property)
++      });
++      continue;
++    }
+     // expect value is legal so that remove !import
+     if (/!import/i.test(value)) {
+       value = value.replace(/!import/, '');

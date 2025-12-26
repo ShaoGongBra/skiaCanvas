@@ -1,0 +1,66 @@
+.Step {
+
+  &__item {
+    overflow: hidden;
+    align-items: stretch;
+
+    &--column {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    &--row {
+      flex-direction: column;
+    }
+
+    &__start {
+      flex-shrink: 0;
+    }
+
+    &__center {
+      &--row {
+        height: 68px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      &--column {
+        width: 68px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+    }
+
+    &__line {
+      &--row {
+        position: absolute;
+        border-top-width: 2px;
+        border-top-color: $duxappTextColor2;
+        top: 50%;
+      }
+
+      &--column {
+        position: absolute;
+        border-left-width: 2px;
+        border-left-color: $duxappTextColor2;
+        left: 50%;
+      }
+    }
+
+    &__point {
+      &__point {
+        width: 20px;
+        height: 20px;
+        background-color: $duxappPrimaryColor;
+        border-radius: 10px;
+      }
+    }
+
+    &__end {
+      &--column {
+        flex: 1;
+      }
+    }
+  }
+}

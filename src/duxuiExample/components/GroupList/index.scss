@@ -1,0 +1,15 @@
+.GroupList {
+  margin: 24px;
+  gap: 24px;
+
+  &__title {
+    font-size: 28px;
+    color: $duxappTextColor2;
+  }
+
+  &__desc {
+    font-size: 24px;
+    color: $duxappTextColor2;
+    line-height: 32px;
+  }
+}

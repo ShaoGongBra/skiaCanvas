@@ -1,0 +1,18 @@
+.Menu {
+  background-color: $duxappWhiteColor;
+  &__mask {
+    background-color: #000;
+    opacity: 0;
+  }
+  &__content {
+    background-color: $duxappWhiteColor;
+    padding: 24px;
+    opacity: 0;
+    &--round {
+      border-radius: 0 0 16px 16px;
+    }
+  }
+}
+.MenuItem {
+  padding: 24px;
+}

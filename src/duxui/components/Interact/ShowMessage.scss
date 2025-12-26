@@ -1,0 +1,24 @@
+.ShowMessage {
+  position: absolute;
+  left: 24px;
+  z-index: 99;
+  transform: translateY(-100px);
+
+  &__main {
+    width: 702px;
+    padding: 24px;
+    background-color: $duxappWhiteColor;
+    align-items: start;
+  }
+
+  &__title {
+    font-size: 32px;
+    color: $duxappTextColor1;
+  }
+
+  &__content {
+    font-size: 24px;
+    margin-top: 20px;
+    color: $duxappTextColor2;
+  }
+}

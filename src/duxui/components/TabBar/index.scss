@@ -1,0 +1,52 @@
+.TabBar-page {
+  &__item {
+    display: none;
+    flex: 1;
+
+    &--hover {
+      display: flex;
+    }
+  }
+}
+
+.TabBar-menu {
+  flex-direction: row;
+  align-items: center;
+  background-color: $duxappWhiteColor;
+  border-top-width: 1px;
+  border-top-color: $duxappLineColor;
+  &__item {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+    &__name {
+      color: $duxuiTabBarNameColor;
+
+      &--hover {
+        color: $duxuiTabBarNameHoverColor;
+      }
+    }
+  }
+
+  &__icon {
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    &__image {
+      width: 48px;
+      height: 48px;
+    }
+
+    &__name {
+      margin-top: 4px;
+      font-size: 24px;
+      color: $duxuiTabBarNameColor;
+
+      &--hover {
+        color: $duxuiTabBarNameHoverColor;
+      }
+    }
+  }
+}

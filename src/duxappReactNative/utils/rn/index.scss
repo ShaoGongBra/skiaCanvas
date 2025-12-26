@@ -1,0 +1,82 @@
+.AppUC {
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 10;
+
+  &__main {
+    width: 606px;
+    background-color: $duxappWhiteColor;
+    border-radius: 32px;
+    padding: 48px;
+  }
+
+  &__title {
+    font-size: 34px;
+    font-weight: 600;
+    color: $duxappTextColor1;
+    line-height: 48px;
+    text-align: center;
+  }
+
+  &__content {
+    margin-top: 48px;
+    font-size: 28px;
+    color: $duxappTextColor1;
+    line-height: 40px;
+  }
+
+  &__submit {
+    margin-top: 72px;
+    background-color: $duxappPrimaryColor;
+    color: $duxappTextColor4;
+    border-radius: 40px;
+    height: 74px;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  &__close {
+    position: absolute;
+    right: -24px;
+    top: -24px;
+    width: 60px;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    background-color: $duxappWhiteColor;
+    border-width: 1px;
+    border-color: $duxappLineColor;
+    border-radius: 30px;
+
+    &__icon {
+      width: 38px;
+      height: 38px;
+    }
+  }
+}
+
+.AppUP {
+  &__progress {
+    height: 60px;
+    border-radius: 30px;
+    overflow: hidden;
+    background-color: $duxappPageColor;
+    margin-top: 72px;
+
+    &__child {
+      height: 60px;
+      background-color: $duxappPrimaryColor;
+      border-radius: 0 30px 30px 0;
+    }
+
+    &__text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      color: $duxappTextColor4;
+      font-size: 28px;
+    }
+  }
+}

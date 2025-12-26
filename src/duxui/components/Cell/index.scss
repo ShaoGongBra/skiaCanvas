@@ -1,0 +1,44 @@
+.CellGroup {
+  padding: 0 30px;
+  background-color: $duxappWhiteColor;
+}
+.Cell {
+  padding: 30px;
+  align-items: center;
+  flex-direction: row;
+  background-color: $duxappWhiteColor;
+  &__left {
+    margin-right: 24px;
+    flex-shrink: 0;
+    &--col {
+      flex-direction: column;
+    }
+  }
+  &__icon {
+    padding-right: 34px;
+  }
+  &__title {
+    font-size: 28px;
+    font-weight: bold;
+    color: $duxappTextColor1;
+  }
+  &__subtitle {
+    margin-top: 8px;
+    font-size: 24px;
+    color: $duxappTextColor2;
+  }
+  &__right {
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+  }
+  &__desc {
+    flex: 1;
+    text-align: right;
+    color: $duxappTextColor3;
+    font-size: 28px;
+  }
+}
+.CellItem {
+  padding: 30px 0;
+}

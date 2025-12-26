@@ -1,0 +1,8 @@
+{
+  "name": "duxappReactNative",
+  "description": "react-native基础系统",
+  "version": "1.0.55",
+  "dependencies": [
+    "duxappStyle"
+  ]
+}

@@ -1,0 +1,203 @@
+import { useEffect, useMemo, memo, useRef, forwardRef, useImperativeHandle, useState, useCallback } from 'react'
+import { useDidShow } from '@tarojs/taro'
+import { getWindowInfo, noop } from '@/duxapp'
+import { ListLoading } from './Loading'
+import { ListSelect } from './Select'
+import { FlatList } from './FlatList'
+import { WeappList } from './WeappList'
+import './index.scss'
+import { Empty } from '../Empty'
+import { BaseScrollView } from './ScrollView'
+
+export const createList = usePageData => {
+  const List = forwardRef(function List_({
+    renderItem: Item,
+    renderLine,
+    listCallback,
+    listField = 'list',
+    keyField = 'id',
+    reloadForShow,
+    url,
+    data,
+    requestOption,
+    option,
+    renderHeader,
+    renderFooter,
+    columns = 1,
+    // 是否分页 默认是有分页的 某些数据后台是一次性返回的，没有分页
+    page = true,
+    // 为空提示文字
+    emptyTitle = '暂无数据',
+    // 自定义为空时候的提示渲染
+    renderEmpty,
+    // 数据操作的回调
+    onAction,
+    // 是否启用缓存
+    cache,
+    listStyle,
+    listClassName,
+    useVirtualList,
+    virtualListProps,
+    virtualWaterfallProps,
+    // 传递列表项目的属性，不支持动态动态更新
+    itemProps,
+    ...props
+  }, ref) {
+
+    const [list, action] = usePageData({ url, data, ...requestOption }, { field: listField, listCallback, cache, ...option })
+
+    const refs = useRef({})
+    refs.current = { ...itemProps, list, action }
+
+    const { onRefresh: propsOnRefresh, ...restProps } = props
+
+    useDidShow(() => {
+      if (option?.ready === false) {
+        return
+      }
+      // 在上面页面关掉的时候刷新数据
+      reloadForShow === true && action.reload()
+    })
+
+    // 如果传入TabBar组件，则使用TabBar组件的显示hook加载数据
+    reloadForShow?.useShow?.(() => {
+      if (option?.ready === false) {
+        return
+      }
+      action.reload()
+    })
+
+    useEffect(() => {
+      if (typeof onAction === 'function') {
+        onAction?.(action)
+      } else if (onAction) {
+        onAction.current = action
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [action])
+
+    useImperativeHandle(ref, () => {
+      return action
+    })
+
+    const emptyStatus = !action.loading && !list.length
+
+    const { type } = ListSelect.useContext()
+
+    const RenderItem = useMemo(() => {
+      const Item_ = ({ data: itemData, id, index, item = itemData?.[index], ...otherProps }) => {
+        return <ListSelect.Item item={item} index={index} id={id}>
+          <Item item={item} id={type ? undefined : id} index={index} {...otherProps} {...refs.current} />
+        </ListSelect.Item>
+      }
+      if (process.env.TARO_ENV === 'rn') {
+        return Item_
+      }
+      return memo(Item_)
+    }, [type])
+
+    const [pullRefreshing, setPullRefreshing] = useState(false)
+
+    const actionLoading = action.loading
+    const actionReload = action.reload
+
+    useEffect(() => {
+      if (!actionLoading && pullRefreshing) {
+        setPullRefreshing(false)
+      }
+    }, [actionLoading, pullRefreshing])
+
+    const handleUserRefresh = useCallback((...args) => {
+      setPullRefreshing(true)
+      if (!actionLoading) {
+        actionReload()
+      }
+      propsOnRefresh?.(...args)
+    }, [actionLoading, actionReload, propsOnRefresh])
+
+    const refresh = pullRefreshing
+
+    const loadMore = (page && !action.refresh && list.length > 5 || (action.loadEnd && !emptyStatus)) && <ListLoading
+      loading={action.loading}
+      text={action.loading ? '加载中' : action.loadEnd ? '没有更多了' : '上拉加载'}
+    />
+
+    return <ListSelect>
+      {
+        process.env.TARO_ENV === 'rn' ?
+          <FlatList
+            nestedScrollEnabled
+            numColumns={columns}
+            refresh={refresh}
+            onScrollToLower={page && action.next || noop}
+            onRefresh={handleUserRefresh}
+            keyExtractor={(item, index) => item[keyField] ?? index}
+            data={list}
+            renderItem={RenderItem}
+            ItemSeparatorComponent={renderLine}
+            ListHeaderComponent={renderHeader}
+            ListEmptyComponent={!action.loading && (renderEmpty || <Empty title={emptyTitle} />)}
+            ListFooterComponent={<>
+              {renderFooter}
+              {loadMore}
+            </>}
+            {...restProps}
+            maintainVisibleContentPosition={{
+              disabled: true,
+              ...restProps.maintainVisibleContentPosition
+            }}
+          /> : useVirtualList && process.env.TARO_ENV !== 'harmony_cpp' ?
+            <WeappList
+              list={list}
+              RenderItem={RenderItem}
+              columns={columns}
+              page={page}
+              renderHeader={renderHeader}
+              renderFooter={renderFooter}
+              emptyStatus={emptyStatus}
+              renderEmpty={renderEmpty}
+              loadMore={loadMore}
+              Empty={Empty}
+              emptyTitle={emptyTitle}
+              action={action}
+              refresh={refresh}
+              onRefresh={handleUserRefresh}
+              virtualListProps={virtualListProps}
+              virtualWaterfallProps={virtualWaterfallProps}
+              props={restProps}
+            /> :
+            <BaseScrollView
+              list={list}
+              RenderItem={RenderItem}
+              page={page}
+              renderHeader={renderHeader}
+              renderFooter={renderFooter}
+              emptyStatus={emptyStatus}
+              renderEmpty={renderEmpty}
+              loadMore={loadMore}
+              Empty={Empty}
+              emptyTitle={emptyTitle}
+              action={action}
+              refresh={refresh}
+              onRefresh={handleUserRefresh}
+              props={restProps}
+              listStyle={listStyle}
+              listClassName={listClassName}
+              renderLine={renderLine}
+              keyField={keyField}
+            />
+      }
+      <ListSelect.Submit />
+    </ListSelect>
+  })
+
+  List.itemSize = itemSize
+
+  return List
+}
+
+export {
+  ListLoading
+}
+
+const itemSize = px => px * getWindowInfo().screenWidth / 750

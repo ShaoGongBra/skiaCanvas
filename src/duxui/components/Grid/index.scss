@@ -1,0 +1,12 @@
+.Grid {
+  &__row {
+    flex-direction: row;
+  }
+  &__item {
+    width: 0;
+    flex: 1;
+  }
+  &__square {
+    aspect-ratio: 1;
+  }
+}

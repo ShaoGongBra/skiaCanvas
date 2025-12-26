@@ -1,0 +1,22 @@
+.DuxuiShowConfirm {
+  &__main {
+    width: 606px;
+    background-color: $duxappWhiteColor;
+    border-radius: 32px;
+    padding-top: 48px;
+    z-index: 100;
+  }
+
+  &__content {
+    margin-top: 48px;
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+
+  &__btns {
+    margin-top: 36px;
+    border-top-width: 1Px;
+    border-top-color: $duxappLineColor;
+    height: 110px;
+  }
+}
