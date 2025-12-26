@@ -1,20 +1,20 @@
 
 const config = {
   android: {
-    appid: 'cn.duxapp.duxui',
-    appName: 'duxUI库',
-    versionCode: 2,
-    versionName: '1.1.0',
+    appid: 'cn.duxapp.canvas',
+    appName: 'Skia Canvas',
+    versionCode: 1,
+    versionName: '1.0.0',
     keystore: {
-      storeFile: 'duxui.keystore',
-      keyAlias: 'duxui',
-      storePassword: 'TN62eyasJAKm2ksD',
-      keyPassword: 'TN62eyasJAKm2ksD'
+      storeFile: 'duxapp.keystore',
+      keyAlias: 'duxapp',
+      storePassword: 'AXKymEffiRHpAMMY',
+      keyPassword: 'AXKymEffiRHpAMMY'
     }
   },
   ios: {
-    BundleId: 'cn.duxapp.duxui',
-    appName: 'duxUI库',
+    BundleId: 'cn.duxapp.canvas',
+    appName: 'Skia Canvas',
     versionCode: 1,
     versionName: '1.0.0',
     team: '',
