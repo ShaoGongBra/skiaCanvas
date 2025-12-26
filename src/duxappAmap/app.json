@@ -1,8 +1,0 @@
-{
-  "name": "duxappAmap",
-  "description": "高德地图",
-  "version": "1.0.1",
-  "dependencies": [
-    "expo-gaode-map"
-  ]
-}
